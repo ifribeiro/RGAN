@@ -106,7 +106,7 @@ def get_samples_and_labels(settings):
     settings['num_generated_features'] = samples['train'].shape[2]
 
     return samples, pdf, labels
-
+# TODO: fix np.load function
 def get_data(data_type, data_options=None):
     """
     Helper/wrapper function to get the requested data.
@@ -114,7 +114,7 @@ def get_data(data_type, data_options=None):
     labels = None
     pdf = None
     if data_type == 'load':
-        data_dict = np.load(data_options).item()
+        data_dict = np.load(data_options, allow_pickle=True).item()
         samples = data_dict['samples']
         pdf = data_dict['pdf']
         labels = data_dict['labels']
