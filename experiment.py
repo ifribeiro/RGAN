@@ -253,9 +253,9 @@ for epoch in range(num_epochs):
     ## print
     t = time() - t0
     try:
-        print('%d\t%.2f\t%.4f\t%.4f\t%.5f\t%.0f\t%.2f\t%.2f' % (epoch, t, D_loss_curr, G_loss_curr, mmd2, that_np, pdf_sample, pdf_real))
+        print('%d\t%.2f\t%.4f\t%.4f\t%.5f\t%.0f\t%.2f' % (epoch, t, D_loss_curr, G_loss_curr, mmd2, that_np, pdf_sample))
     except TypeError:       # pdf are missing (format as strings)
-        print('%d\t%.2f\t%.4f\t%.4f\t%.5f\t%.0f\t %s\t %s' % (epoch, t, D_loss_curr, G_loss_curr, mmd2, that_np, pdf_sample, pdf_real))
+        print('%d\t%.2f\t%.4f\t%.4f\t%.5f\t%.0f\t %s\t' % (epoch, t, D_loss_curr, G_loss_curr, mmd2, that_np, pdf_sample))
 
     ## save trace
     trace.write(' '.join(map(str, [epoch, t, D_loss_curr, G_loss_curr, mmd2, that_np, pdf_sample, pdf_real])) + '\n')
