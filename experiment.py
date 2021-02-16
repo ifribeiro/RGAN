@@ -72,7 +72,7 @@ heuristic_sigma_training = median_pairwise_distance(samples['vali'])
 best_mmd2_so_far = 1000
 
 # optimise sigma using that (that's t-hat)
-batch_multiplier = 5000//batch_size
+batch_multiplier = 100//batch_size
 eval_size = batch_multiplier*batch_size
 eval_eval_size = int(0.2*eval_size)
 eval_real_PH = tf.placeholder(tf.float32, [eval_eval_size, seq_length, num_generated_features])
@@ -185,7 +185,8 @@ for epoch in range(num_epochs):
                 resample_rate_in_min, multivariate_mnist, seq_length, labels=vis_C)
    
     # compute mmd2 and, if available, prob density
-    if epoch % eval_freq == 0:
+    # TODO: CREATE FLAG TO ENABLE EVALUATION
+    if 1 == 0:
         ## how many samples to evaluate with?
         eval_Z = model.sample_Z(eval_size, seq_length, latent_dim, use_time)
         if 'eICU_task' in data:
@@ -239,6 +240,7 @@ for epoch in range(num_epochs):
         that = 'NA'
         pdf_sample = 'NA'
         pdf_real = 'NA'
+        that_np = 'NA'
     
     ## get 'spent privacy'
     if dp:
@@ -253,9 +255,12 @@ for epoch in range(num_epochs):
     ## print
     t = time() - t0
     try:
-        print('%d\t%.2f\t%.4f\t%.4f\t%.5f\t%.0f\t%.2f' % (epoch, t, D_loss_curr, G_loss_curr, mmd2, that_np, pdf_sample))
+        if isinstance(mmd2,str):
+          print('%d\t%.2f\t%.4f\t%.4f\t%s' % (epoch, t, D_loss_curr, G_loss_curr, mmd2))
+        else:
+          print('%d\t%.2f\t%.4f\t%.4f\t%.5f' % (epoch, t, D_loss_curr, G_loss_curr, mmd2))
     except TypeError:       # pdf are missing (format as strings)
-        print('%d\t%.2f\t%.4f\t%.4f\t%.5f\t%.0f\t %s\t' % (epoch, t, D_loss_curr, G_loss_curr, mmd2, that_np, pdf_sample))
+        print('%d\t%.2f\t%.4f\t%.4f\t%.5f' % (epoch, t, D_loss_curr, G_loss_curr, mmd2))
 
     ## save trace
     trace.write(' '.join(map(str, [epoch, t, D_loss_curr, G_loss_curr, mmd2, that_np, pdf_sample, pdf_real])) + '\n')
