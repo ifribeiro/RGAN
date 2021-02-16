@@ -340,7 +340,7 @@ def load_parameters(identifier):
     Load parameters from a numpy file
     """
     load_path = './experiments/parameters/' + identifier + '.npy'
-    model_parameters = np.load(load_path).item()
+    model_parameters = np.load(load_path,allow_pickle=True).item()
     return model_parameters
 
 # --- to do with trained models --- #
